@@ -58,6 +58,39 @@ function drawRandomCard() {
 }
 function isSmallScreen() { return window.matchMedia('(max-width: 620px)').matches; }
 function imgFor(full) { if (!isSmallScreen()) return full; if (full.includes('assets/cards/')) return full.replace('assets/cards/', 'assets/cards-s/'); if (full.includes('assets/backs/')) return full.replace('assets/backs/', 'assets/backs-s/').replace(/\.png$/, '.jpg'); return full; }
+
+function preloadAllImages() {
+  const queue = [];
+  const seen = new Set();
+  state.cards.forEach((card) => {
+    [card.image, card.backImage].forEach((path) => {
+      if (!path) return;
+      const url = imgFor(path);
+      if (seen.has(url)) return;
+      seen.add(url);
+      queue.push(url);
+    });
+  });
+  const concurrency = 6;
+  let active = 0;
+  function next() {
+    while (active < concurrency && queue.length) {
+      const url = queue.shift();
+      active += 1;
+      const img = new Image();
+      img.onload = img.onerror = () => { active -= 1; next(); };
+      img.src = url;
+    }
+  }
+  next();
+}
+
+const startPreload = () => {
+  if (document.readyState === 'complete') preloadAllImages();
+  else window.addEventListener('load', preloadAllImages, { once: true });
+};
+startPreload();
+
 function renderDrawFace() { if (!drawCard) return; drawStage.innerHTML = drawFlipped ? `<div class="face back"><img class="back-image" src="${imgFor(drawCard.backImage)}" alt="${drawCard.title}的文字背面"></div>` : `<div class="face front"><img src="${imgFor(drawCard.image)}" alt="${drawCard.title}的放大圖案"></div>`; }
 function closeDraw() { drawModal.hidden = true; drawModal.setAttribute('aria-hidden','true'); drawStage.innerHTML = ''; }
 
