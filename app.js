@@ -57,7 +57,7 @@ function drawRandomCard() {
   drawModal.hidden = false; drawModal.setAttribute('aria-hidden','false');
 }
 function isSmallScreen() { return window.matchMedia('(max-width: 620px)').matches; }
-function imgFor(full) { return isSmallScreen() ? full.replace('assets/cards/', 'assets/cards-s/').replace('assets/backs/', 'assets/backs-s/') : full; }
+function imgFor(full) { if (!isSmallScreen()) return full; if (full.includes('assets/cards/')) return full.replace('assets/cards/', 'assets/cards-s/'); if (full.includes('assets/backs/')) return full.replace('assets/backs/', 'assets/backs-s/').replace(/\.png$/, '.jpg'); return full; }
 function renderDrawFace() { if (!drawCard) return; drawStage.innerHTML = drawFlipped ? `<div class="face back"><img class="back-image" src="${imgFor(drawCard.backImage)}" alt="${drawCard.title}的文字背面"></div>` : `<div class="face front"><img src="${imgFor(drawCard.image)}" alt="${drawCard.title}的放大圖案"></div>`; }
 function closeDraw() { drawModal.hidden = true; drawModal.setAttribute('aria-hidden','true'); drawStage.innerHTML = ''; }
 
