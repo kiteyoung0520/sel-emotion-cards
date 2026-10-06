@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SEL 情緒卡牌｜互動翻牌</title>
-  <link rel="stylesheet" href="styles.css?v=6">
+  <link rel="stylesheet" href="styles.css?v=7">
 </head>
 <body>
   <main class="app-shell">
@@ -21,11 +21,15 @@
     <div class="mode-row">
       <button class="mode-button active" data-mode="explore">自由探索</button>
       <button class="mode-button" id="startReflectionButton" data-mode="reflect">開始反思</button>
+      <button class="mode-button game-button" data-mode="checkin">心情簽到</button>
+      <button class="mode-button game-button" data-mode="pairing">情境配對</button>
+      <button class="mode-button game-button" data-mode="perspective">視角切換</button>
     </div>
     <div class="safety-row">
       <span class="safety-note">安全選擇</span>
       <button class="soft-button" id="drawButton">抽一張</button>
       <button class="soft-button" id="skipButton">跳過這張</button>
+      <button class="soft-button" id="historyButton">遊戲紀錄</button>
       <button class="soft-button download-button" id="downloadButton" disabled>下載覺察 PDF</button>
       <button class="soft-button" id="pauseButton">暫停</button>
     </div>
@@ -80,10 +84,32 @@
       <button class="primary-button reflection-done">完成這次覺察</button>
     </div>
   </div>
+  <div class="game-modal" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="遊戲模式">
+    <button class="modal-close game-close" type="button" aria-label="關閉遊戲">×</button>
+    <div class="game-panel">
+      <p class="eyebrow" id="gameEyebrow">GAME MODE</p>
+      <h2 id="gameTitle">遊戲</h2>
+      <p class="game-instruction" id="gameInstruction"></p>
+      <div class="game-stage"></div>
+      <div class="game-fields"></div>
+    </div>
+  </div>
+  <div class="history-modal" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="遊戲紀錄">
+    <button class="modal-close history-close" type="button" aria-label="關閉遊戲紀錄">×</button>
+    <div class="history-panel">
+      <p class="eyebrow">GAME JOURNAL</p>
+      <h2>遊戲紀錄</h2>
+      <p class="game-instruction">這裡收藏你的心情簽到、情境配對與視角切換。可以一次下載成 PDF。</p>
+      <div class="history-list" id="historyList"></div>
+      <div class="history-actions">
+        <button class="soft-button" id="historyDownloadButton">下載遊戲紀錄 PDF</button>
+      </div>
+    </div>
+  </div>
   <div class="pause-toast" hidden>已暫停。先照顧自己，準備好再繼續。</div>
   <script src="vendor/html2canvas.min.js"></script>
   <script src="vendor/jspdf.umd.min.js"></script>
   <script src="cards.js?v=6"></script>
-  <script src="app.js?v=7"></script>
+  <script src="app.js?v=8"></script>
 </body>
 </html>
