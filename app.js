@@ -63,8 +63,9 @@ const GAME_DEFS = {
     saveLabel: '保存這次視角',
   },
 };
-function pickRandomByType(type) {
-  const cards = state.cards.filter(c => c.type === type);
+function pickRandomByType(type, avoid) {
+  const pool = state.cards.filter(c => c.type === type && (!avoid || c.id !== avoid.id));
+  const cards = pool.length ? pool : state.cards.filter(c => c.type === type);
   if (!cards.length) return null;
   return cards[Math.floor(Math.random() * cards.length)];
 }
@@ -77,6 +78,7 @@ const gameFields = document.querySelector('.game-fields');
 const gameTitle = document.querySelector('#gameTitle');
 const gameEyebrow = document.querySelector('#gameEyebrow');
 const gameInstruction = document.querySelector('#gameInstruction');
+const gameAgainButton = document.querySelector('#gameAgainButton');
 const historyModal = document.querySelector('.history-modal');
 const historyList = document.querySelector('#historyList');
 const state = { cards: window.SEL_CARDS || [], activeType: '', mode: 'explore', focusId: '', reflections: Array.isArray(savedReflections) ? savedReflections : [] };
@@ -193,7 +195,7 @@ function renderCards() {
   });
 }
 
-function openZoom(card, flipped) { if (!card) return; closeGame(); zoomCard = card; zoomFlipped = flipped; renderZoomFace(); modal.hidden = false; modal.setAttribute('aria-hidden', 'false'); modalClose.focus(); }
+function openZoom(card, flipped) { if (!card) return; zoomCard = card; zoomFlipped = flipped; renderZoomFace(); modal.hidden = false; modal.setAttribute('aria-hidden', 'false'); modalClose.focus(); }
 function renderZoomFace() { if (!zoomCard) return; zoomStage.innerHTML = zoomFlipped ? `<div class="face back"><img class="back-image" src="${imgFor(zoomCard.backImage)}" alt="${zoomCard.title}的文字背面"></div>` : `<div class="face front"><img src="${imgFor(zoomCard.image)}" alt="${zoomCard.title}的放大圖案"></div>`; }
 function closeZoom() { modal.hidden = true; modal.setAttribute('aria-hidden', 'true'); zoomStage.innerHTML = ''; }
 function openReflection(card) {
@@ -248,8 +250,10 @@ function renderGameStage() {
   const def = GAME_DEFS[gameMode];
   if (!def || !gameMain) {
     gameStage.innerHTML = '<p class="empty-state">這個類型目前沒有卡片。</p>';
+    gameAgainButton.disabled = true;
     return;
   }
+  gameAgainButton.disabled = false;
   const labels = def.slotLabels ? def.slotLabels(gameExtras) : [def.label, ...gameExtras.map(c => c.type)];
   const slots = [{ card: gameMain, label: labels[0] || def.label }].concat(
     gameExtras.map((card, i) => ({ card, label: labels[i + 1] || card.type }))
@@ -259,8 +263,8 @@ function renderGameStage() {
       <p class="game-slot-label">${escapeHtml(slot.label)}</p>
       <div class="game-slot-card card" tabindex="0" role="button" aria-label="${escapeHtml(slot.card.title)}，點擊翻面" data-id="${slot.card.id}" style="--accent:${slot.card.accent};--soft:${slot.card.soft}">
         <div class="card-inner">
-          <div class="face front"><img src="${imgFor(slot.card.image)}" alt="${escapeHtml(slot.card.title)}的圖案"></div>
-          <div class="face back"><img class="back-image" src="${imgFor(slot.card.backImage)}" alt="${escapeHtml(slot.card.title)}的文字背面"></div>
+          <div class="face front"><img src="${imgFor(slot.card.image)}" alt="${escapeHtml(slot.card.title)}的圖案"><button class="zoom-button" type="button" aria-label="放大查看${escapeHtml(slot.card.title)}">放大</button></div>
+          <div class="face back"><img class="back-image" src="${imgFor(slot.card.backImage)}" alt="${escapeHtml(slot.card.title)}的文字背面"><button class="zoom-button" type="button" aria-label="放大查看${escapeHtml(slot.card.title)}文字">放大</button></div>
         </div>
       </div>
     </div>
@@ -268,8 +272,19 @@ function renderGameStage() {
   gameStage.querySelectorAll('.game-slot-card').forEach(card => {
     const flip = () => card.classList.toggle('is-flipped');
     card.addEventListener('click', flip);
+    card.querySelectorAll('.zoom-button').forEach(button => button.addEventListener('click', event => {
+      event.stopPropagation();
+      openZoom(state.cards.find(item => item.id === card.dataset.id), card.classList.contains('is-flipped'));
+    }));
     card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flip(); } });
   });
+}
+function redrawGame() {
+  const def = GAME_DEFS[gameMode];
+  if (!def) return;
+  gameMain = pickRandomByType(def.label, gameMain);
+  gameExtras = def.drawExtras();
+  renderGameStage();
 }
 function renderGameFields() {
   const def = GAME_DEFS[gameMode];
@@ -499,4 +514,5 @@ document.querySelector('#historyButton').addEventListener('click', openHistory);
 document.querySelector('.history-close').addEventListener('click', closeHistory);
 historyModal.addEventListener('click', event => { if (event.target === historyModal) closeHistory(); });
 document.querySelector('#historyDownloadButton').addEventListener('click', downloadGamePdf);
-document.addEventListener('keydown', event => { if (event.key === 'Escape') { if (!historyModal.hidden) closeHistory(); if (!gameModal.hidden) closeGame(); if (!modal.hidden) closeZoom(); if (!reflectionModal.hidden) closeReflection(); if (!drawModal.hidden) closeDraw(); } });
+document.querySelector('#gameAgainButton').addEventListener('click', redrawGame);
+document.addEventListener('keydown', event => { if (event.key === 'Escape') { if (!modal.hidden) closeZoom(); else if (!historyModal.hidden) closeHistory(); else if (!gameModal.hidden) closeGame(); else if (!reflectionModal.hidden) closeReflection(); else if (!drawModal.hidden) closeDraw(); } });

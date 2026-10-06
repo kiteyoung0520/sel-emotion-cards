@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SEL 情緒卡牌｜互動翻牌</title>
-  <link rel="stylesheet" href="styles.css?v=7">
+  <link rel="stylesheet" href="styles.css?v=8">
 </head>
 <body>
   <main class="app-shell">
@@ -91,6 +91,10 @@
       <h2 id="gameTitle">遊戲</h2>
       <p class="game-instruction" id="gameInstruction"></p>
       <div class="game-stage"></div>
+      <div class="game-actions">
+        <button class="soft-button" id="gameAgainButton" type="button">↻ 再抽一次</button>
+        <span class="game-actions-hint">不喜歡這組牌就再抽一次，你填的內容會保留。</span>
+      </div>
       <div class="game-fields"></div>
     </div>
   </div>
@@ -110,6 +114,6 @@
   <script src="vendor/html2canvas.min.js"></script>
   <script src="vendor/jspdf.umd.min.js"></script>
   <script src="cards.js?v=6"></script>
-  <script src="app.js?v=8"></script>
+  <script src="app.js?v=9"></script>
 </body>
 </html>
