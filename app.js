@@ -57,7 +57,7 @@ function drawRandomCard() {
   drawModal.hidden = false; drawModal.setAttribute('aria-hidden','false');
 }
 function isSmallScreen() { return window.matchMedia('(max-width: 620px)').matches; }
-function imgFor(full) { if (!isSmallScreen()) return full; if (full.includes('assets/cards/')) return full.replace('assets/cards/', 'assets/cards-s/'); if (full.includes('assets/backs/')) return full.replace('assets/backs/', 'assets/backs-s/').replace(/\.png$/, '.jpg'); return full; }
+function imgFor(full) { if (!isSmallScreen()) return full; if (full.includes('assets/cards/')) return full.replace('assets/cards/', 'assets/cards-s/'); if (full.includes('assets/backs/')) return full.replace('assets/backs/', 'assets/backs-s/').replace(/\.png(?=\?|$)/, '.jpg'); return full; }
 
 function preloadAllImages() {
   const queue = [];
