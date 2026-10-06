@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SEL 情緒卡牌｜互動翻牌</title>
+  <link rel="stylesheet" href="styles.css?v=6">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">SEL · CARD TABLE</p>
+        <h1>今天，從哪一張卡開始？</h1>
+        <p class="intro">選擇一個主題，點擊卡片翻面。先看見自己，再決定要不要分享。</p>
+      </div>
+      <div class="table-mark" aria-hidden="true"><span></span><span></span><span></span></div>
+    </header>
+
+  <section class="game-dock" aria-label="遊戲控制">
+    <div class="mode-row">
+      <button class="mode-button active" data-mode="explore">自由探索</button>
+    </div>
+    <div class="safety-row">
+      <span class="safety-note">安全選擇</span>
+      <button class="soft-button" id="drawButton">抽一張</button>
+      <button class="soft-button" id="skipButton">跳過這張</button>
+      <button class="soft-button" id="pauseButton">暫停</button>
+    </div>
+  </section>
+  <nav class="category-bar" aria-label="卡片類別"></nav>
+
+    <section class="deck-header">
+      <div>
+        <p class="eyebrow" id="activeEyebrow">目前牌組</p>
+        <h2 id="activeTitle">情境卡</h2>
+      </div>
+      <p class="deck-hint"><span class="flip-symbol">↻</span> 點卡片翻面，再點一次翻回圖案</p>
+    </section>
+
+  <section class="round-banner" hidden></section>
+  <section class="card-grid" aria-live="polite"></section>
+    <p class="empty-state" hidden>這個類別目前沒有卡片。</p>
+  </main>
+  <div class="zoom-modal" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="卡片放大預覽">
+    <button class="modal-close" type="button" aria-label="關閉放大預覽">×</button>
+    <button class="modal-flip" type="button">翻面</button>
+    <div class="zoom-stage"></div>
+  </div>
+  <div class="draw-modal" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="隨機抽卡">
+    <button class="modal-close draw-close" type="button" aria-label="關閉隨機抽卡">×</button>
+    <div class="draw-panel">
+      <p class="eyebrow">DRAW A CARD</p>
+      <h2>這一輪，先陪自己看一看</h2>
+      <p class="draw-instruction">先觀察圖案與第一個浮現的感受，準備好後再翻面。</p>
+      <div class="draw-stage"></div>
+      <div class="draw-actions">
+        <button class="soft-button" id="drawFlipButton">翻面</button>
+        <button class="soft-button" id="drawZoomButton">放大</button>
+        <button class="soft-button" id="drawAgainButton">換一張</button>
+        <button class="primary-button" id="drawReflectButton">開始反思</button>
+      </div>
+    </div>
+  </div>
+  <div class="reflection-modal" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="五題反思">
+    <div class="reflection-panel">
+      <button class="modal-close reflection-close" type="button" aria-label="關閉反思">×</button>
+      <p class="eyebrow">SEL REFLECTION</p>
+      <h2>讓一張卡，陪你走三步</h2>
+      <p class="reflection-card-title"></p>
+      <div class="reflection-steps">
+        <label><span>01 · 覺察</span><b>我看見了什麼？</b><textarea placeholder="寫下你注意到的情境、畫面或細節"></textarea></label>
+        <label><span>02 · 身體</span><b>我的身體哪裡有反應？</b><textarea placeholder="例如胸口、肩膀、肚子或呼吸"></textarea></label>
+        <label><span>03 · 感受</span><b>我現在有什麼感覺？</b><textarea placeholder="試著說出一個或幾個情緒"></textarea></label>
+        <label><span>04 · 理解</span><b>造成這個感覺的原因？</b><textarea placeholder="可能發生了什麼？我在乎的是什麼？"></textarea></label>
+        <label><span>05 · 行動</span><b>我想嘗試哪一個小行動？</b><textarea placeholder="選一個今天做得到的小步驟"></textarea></label>
+      </div>
+      <button class="primary-button reflection-done">完成這次覺察</button>
+    </div>
+  </div>
+  <div class="pause-toast" hidden>已暫停。先照顧自己，準備好再繼續。</div>
+  <script src="cards.js?v=3"></script>
+  <script src="app.js?v=3"></script>
+</body>
+</html>
