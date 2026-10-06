@@ -175,7 +175,10 @@ const startPreload = () => {
 };
 startPreload();
 
-function renderDrawFace() { if (!drawCard) return; drawStage.innerHTML = drawFlipped ? `<div class="face back"><img class="back-image" src="${imgFor(drawCard.backImage)}" alt="${drawCard.title}的文字背面"></div>` : `<div class="face front"><img src="${imgFor(drawCard.image)}" alt="${drawCard.title}的放大圖案"></div>`; }
+function backOverlayHTML(card) {
+  return `<div class="back-overlay" aria-hidden="true"><div class="bo-type">${escapeHtml(card.type)}</div><div class="bo-rule"></div><div class="bo-title">${escapeHtml(card.title)}</div><div class="bo-subtitle">${escapeHtml(card.subtitle)}</div><div class="bo-prompt">${escapeHtml(card.prompt)}</div><div class="bo-qlabel">給自己的話</div><div class="bo-quote">${escapeHtml(card.quote)}</div></div>`;
+}
+function renderDrawFace() { if (!drawCard) return; drawStage.innerHTML = drawFlipped ? `<div class="face back"><img class="back-image" src="${imgFor(drawCard.backImage)}" alt="${drawCard.title}的文字背面">${backOverlayHTML(drawCard)}</div>` : `<div class="face front"><img src="${imgFor(drawCard.image)}" alt="${drawCard.title}的放大圖案"></div>`; }
 function closeDraw() { drawModal.hidden = true; drawModal.setAttribute('aria-hidden','true'); drawStage.innerHTML = ''; }
 
 function renderCategories() {
@@ -186,7 +189,7 @@ function renderCategories() {
 
 function renderCards() {
   const cards = state.cards.filter(c => c.type === state.activeType); activeTitle.textContent = state.activeType; activeEyebrow.textContent = `${cards.length} 張卡片 · 目前牌組`; empty.hidden = cards.length > 0;
-  grid.innerHTML = cards.map(card => `<article class="card ${card.id === state.focusId ? 'is-selected' : ''}" tabindex="0" role="button" aria-label="${card.title}，點擊翻面" data-id="${card.id}" style="--accent:${card.accent};--soft:${card.soft}"><div class="card-inner"><div class="face front"><img src="${imgFor(card.image)}" alt="${card.title}的情境圖案" loading="lazy"><button class="zoom-button" type="button" aria-label="放大查看${card.title}">放大</button></div><div class="face back"><img class="back-image" src="${imgFor(card.backImage)}" alt="${card.title}的文字背面"><button class="zoom-button" type="button" aria-label="放大查看${card.title}文字">放大</button></div></div></article>`).join('');
+  grid.innerHTML = cards.map(card => `<article class="card ${card.id === state.focusId ? 'is-selected' : ''}" tabindex="0" role="button" aria-label="${card.title}，點擊翻面" data-id="${card.id}" style="--accent:${card.accent};--soft:${card.soft}"><div class="card-inner"><div class="face front"><img src="${imgFor(card.image)}" alt="${card.title}的情境圖案" loading="lazy"><button class="zoom-button" type="button" aria-label="放大查看${card.title}">放大</button></div><div class="face back"><img class="back-image" src="${imgFor(card.backImage)}" alt="${card.title}的文字背面">${backOverlayHTML(card)}<button class="zoom-button" type="button" aria-label="放大查看${card.title}文字">放大</button></div></div></article>`).join('');
   grid.querySelectorAll('.card').forEach(card => {
     const flip = () => { card.classList.toggle('is-flipped'); state.focusId = card.dataset.id; };
     card.addEventListener('click', flip);
@@ -196,7 +199,7 @@ function renderCards() {
 }
 
 function openZoom(card, flipped) { if (!card) return; zoomCard = card; zoomFlipped = flipped; renderZoomFace(); modal.hidden = false; modal.setAttribute('aria-hidden', 'false'); modalClose.focus(); }
-function renderZoomFace() { if (!zoomCard) return; zoomStage.innerHTML = zoomFlipped ? `<div class="face back"><img class="back-image" src="${imgFor(zoomCard.backImage)}" alt="${zoomCard.title}的文字背面"></div>` : `<div class="face front"><img src="${imgFor(zoomCard.image)}" alt="${zoomCard.title}的放大圖案"></div>`; }
+function renderZoomFace() { if (!zoomCard) return; zoomStage.innerHTML = zoomFlipped ? `<div class="face back"><img class="back-image" src="${imgFor(zoomCard.backImage)}" alt="${zoomCard.title}的文字背面">${backOverlayHTML(zoomCard)}</div>` : `<div class="face front"><img src="${imgFor(zoomCard.image)}" alt="${zoomCard.title}的放大圖案"></div>`; }
 function closeZoom() { modal.hidden = true; modal.setAttribute('aria-hidden', 'true'); zoomStage.innerHTML = ''; }
 function openReflection(card) {
   if (!card) return;
@@ -264,7 +267,7 @@ function renderGameStage() {
       <div class="game-slot-card card" tabindex="0" role="button" aria-label="${escapeHtml(slot.card.title)}，點擊翻面" data-id="${slot.card.id}" style="--accent:${slot.card.accent};--soft:${slot.card.soft}">
         <div class="card-inner">
           <div class="face front"><img src="${imgFor(slot.card.image)}" alt="${escapeHtml(slot.card.title)}的圖案"><button class="zoom-button" type="button" aria-label="放大查看${escapeHtml(slot.card.title)}">放大</button></div>
-          <div class="face back"><img class="back-image" src="${imgFor(slot.card.backImage)}" alt="${escapeHtml(slot.card.title)}的文字背面"><button class="zoom-button" type="button" aria-label="放大查看${escapeHtml(slot.card.title)}文字">放大</button></div>
+          <div class="face back"><img class="back-image" src="${imgFor(slot.card.backImage)}" alt="${escapeHtml(slot.card.title)}的文字背面">${backOverlayHTML(slot.card)}<button class="zoom-button" type="button" aria-label="放大查看${escapeHtml(slot.card.title)}文字">放大</button></div>
         </div>
       </div>
     </div>
