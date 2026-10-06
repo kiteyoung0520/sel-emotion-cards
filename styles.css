@@ -18,7 +18,11 @@ h1 { font-size:clamp(28px,4vw,50px); line-height:1.25; }
 .mode-row,.safety-row { display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
 .mode-button,.soft-button { border:1px solid #dacdbf; border-radius:999px; padding:8px 13px; background:#fffaf2; color:#635b63; cursor:pointer; font:500 12px inherit; }
 .mode-button.active { background:#4f7180; border-color:#4f7180; color:#fff; }
+.mode-button[data-mode="reflect"] { border-color:#b48a62; color:#8b6547; }
+.mode-button[data-mode="reflect"]:hover,.mode-button[data-mode="reflect"]:focus-visible { border-color:#b48a62; outline-color:rgba(180,138,98,.2); }
+.download-button:disabled { cursor:not-allowed; opacity:.48; }
 .soft-button:hover,.soft-button:focus-visible,.mode-button:hover,.mode-button:focus-visible { border-color:#628a91; outline:2px solid rgba(98,138,145,.18); outline-offset:2px; }
+.soft-button:disabled { opacity:.45; cursor:not-allowed; transform:none; }
 .safety-note { margin-right:3px; color:#887b71; font-size:11px; letter-spacing:.08em; }
 .category-button { border:1px solid var(--line); border-radius:999px; padding:10px 15px; background:rgba(255,252,247,.68); color:#625963; cursor:pointer; font:500 13px inherit; transition:.2s ease; }
 .category-button:hover,.category-button:focus-visible { transform:translateY(-2px); border-color:var(--accent); outline:none; }
@@ -91,6 +95,26 @@ h1 { font-size:clamp(28px,4vw,50px); line-height:1.25; }
 .draw-stage .back-image { border-radius:17px; }
 .draw-actions { display:flex; flex-wrap:wrap; justify-content:center; gap:9px; }
 .draw-actions .primary-button { margin-top:0; }
+.pdf-render-root { position:fixed; left:-100000px; top:0; z-index:-1; display:block; }
+.pdf-report { width:794px; background:#fbf8f1; color:#302b31; font-family:'Noto Sans TC','Microsoft JhengHei',sans-serif; }
+.pdf-page { width:794px; min-height:1123px; padding:66px 66px 54px; background:#fbf8f1; border-top:14px solid var(--accent); display:flex; flex-direction:column; }
+.pdf-kicker,.pdf-label { color:var(--accent); font-size:16px; letter-spacing:.12em; font-weight:600; }
+.pdf-heading { display:flex; justify-content:space-between; align-items:flex-start; gap:20px; padding:24px 0 26px; border-bottom:1px solid #dfd3c5; }
+.pdf-heading h1 { margin:0; font:700 38px/1.3 'Noto Serif TC','PMingLiU',serif; letter-spacing:.06em; }
+.pdf-heading p { margin:10px 0 0; color:#82756f; font-size:15px; }
+.pdf-type { border:1px solid var(--accent); border-radius:999px; padding:9px 15px; color:var(--accent); font-size:14px; white-space:nowrap; }
+.pdf-card { display:grid; grid-template-columns:210px 1fr; gap:28px; align-items:center; padding:30px 0; }
+.pdf-card img { width:210px; height:294px; object-fit:cover; border-radius:14px; box-shadow:0 8px 20px rgba(65,50,40,.18); }
+.pdf-card h2 { margin:7px 0 10px; font:700 29px/1.35 'Noto Serif TC','PMingLiU',serif; }
+.pdf-subtitle { color:#766e76; font-size:16px; line-height:1.7; }
+.pdf-quote { margin-top:30px; padding:17px 20px; border-left:4px solid var(--accent); background:#f1eadf; }
+.pdf-quote b { color:var(--accent); font-size:14px; }
+.pdf-quote p { margin:9px 0 0; font:500 18px/1.8 'Noto Serif TC','PMingLiU',serif; }
+.pdf-reflection { margin-top:4px; }
+.pdf-answer { display:grid; grid-template-columns:225px 1fr; gap:20px; min-height:62px; padding:13px 0; border-bottom:1px solid #e1d8ce; }
+.pdf-answer b { font:600 16px/1.6 'Noto Serif TC','PMingLiU',serif; }
+.pdf-answer p { margin:0; color:#4f484f; font-size:15px; line-height:1.7; white-space:pre-wrap; }
+.pdf-page footer { margin-top:auto; padding-top:28px; color:#978b82; font-size:13px; letter-spacing:.06em; text-align:center; }
 @media (max-width:900px) { .card-grid{grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px 16px}.hero{align-items:flex-start}.table-mark{display:none} }
 @media (max-width:620px) { .app-shell{padding:22px 14px 48px}.card-grid{grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px 12px}.deck-header{display:block}.deck-hint{margin-top:12px} }
 @media (max-width:700px) { .game-dock{align-items:flex-start; flex-direction:column}.reflection-panel{padding:24px 18px}.reflection-steps{grid-template-columns:1fr}.reflection-steps textarea{min-height:75px} }

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SEL 情緒卡牌｜互動翻牌</title>
-  <link rel="stylesheet" href="styles.css?v=6">
+  <link rel="stylesheet" href="styles.css?v=7">
 </head>
 <body>
   <main class="app-shell">
@@ -20,11 +20,13 @@
   <section class="game-dock" aria-label="遊戲控制">
     <div class="mode-row">
       <button class="mode-button active" data-mode="explore">自由探索</button>
+      <button class="mode-button" id="startReflectionButton" data-mode="reflect">開始反思</button>
     </div>
     <div class="safety-row">
       <span class="safety-note">安全選擇</span>
       <button class="soft-button" id="drawButton">抽一張</button>
       <button class="soft-button" id="skipButton">跳過這張</button>
+      <button class="soft-button download-button" id="downloadButton" disabled>下載覺察 PDF</button>
       <button class="soft-button" id="pauseButton">暫停</button>
     </div>
   </section>
@@ -66,7 +68,7 @@
     <div class="reflection-panel">
       <button class="modal-close reflection-close" type="button" aria-label="關閉反思">×</button>
       <p class="eyebrow">SEL REFLECTION</p>
-      <h2>讓一張卡，陪你走三步</h2>
+      <h2>讓一張卡，陪你走五步</h2>
       <p class="reflection-card-title"></p>
       <div class="reflection-steps">
         <label><span>01 · 覺察</span><b>我看見了什麼？</b><textarea placeholder="寫下你注意到的情境、畫面或細節"></textarea></label>
@@ -79,7 +81,9 @@
     </div>
   </div>
   <div class="pause-toast" hidden>已暫停。先照顧自己，準備好再繼續。</div>
-  <script src="cards.js?v=3"></script>
-  <script src="app.js?v=3"></script>
+  <script src="vendor/html2canvas.min.js"></script>
+  <script src="vendor/jspdf.umd.min.js"></script>
+  <script src="cards.js?v=4"></script>
+  <script src="app.js?v=5"></script>
 </body>
 </html>

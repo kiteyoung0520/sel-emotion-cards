@@ -1,8 +1,16 @@
-# SEL �����d�P�U����½�P��
+# SEL 情緒卡牌互動翻牌遊戲
 
-SEL ����½�P�C���G��ܥD�D�B�I���d��½���A���ݨ��ۤv�A�A�M�w�n���n���ɡC
+這是一套以 SEL（社會情緒學習）為核心的互動卡牌遊戲，保留原始卡片圖案，提供自由探索、翻面、放大、換一張，以及五步反思功能。
 
-?? �u�W�ժ��Ghttps://kiteyoung0520.github.io/sel-emotion-cards/
+## 使用方式
 
-- ���a�}�ҡG�������s�����} index.html`n- Repo�Ghttps://github.com/kiteyoung0520/sel-emotion-cards
+開啟 `index.html` 即可使用。抽到卡片後，可以：
 
+- 翻面查看卡片文字
+- 放大查看卡片
+- 換一張卡
+- 進行五步反思：看見什麼、身體反應、感受、原因，以及下一個小行動
+
+## 公開遊玩
+
+本專案透過 GitHub Pages 發佈，適合直接以瀏覽器開啟使用。
