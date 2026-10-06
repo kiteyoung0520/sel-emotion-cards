@@ -56,7 +56,9 @@ function drawRandomCard() {
   drawInstruction.textContent = '先觀察圖案與第一個浮現的感受，準備好後再翻面或開始反思。';
   drawModal.hidden = false; drawModal.setAttribute('aria-hidden','false');
 }
-function renderDrawFace() { if (!drawCard) return; drawStage.innerHTML = drawFlipped ? `<div class="face back"><img class="back-image" src="${drawCard.backImage}" alt="${drawCard.title}的文字背面"></div>` : `<div class="face front"><img src="${drawCard.image}" alt="${drawCard.title}的放大圖案"></div>`; }
+function isSmallScreen() { return window.matchMedia('(max-width: 620px)').matches; }
+function imgFor(full) { return isSmallScreen() ? full.replace('assets/cards/', 'assets/cards-s/').replace('assets/backs/', 'assets/backs-s/') : full; }
+function renderDrawFace() { if (!drawCard) return; drawStage.innerHTML = drawFlipped ? `<div class="face back"><img class="back-image" src="${imgFor(drawCard.backImage)}" alt="${drawCard.title}的文字背面"></div>` : `<div class="face front"><img src="${imgFor(drawCard.image)}" alt="${drawCard.title}的放大圖案"></div>`; }
 function closeDraw() { drawModal.hidden = true; drawModal.setAttribute('aria-hidden','true'); drawStage.innerHTML = ''; }
 
 function renderCategories() {
@@ -67,7 +69,7 @@ function renderCategories() {
 
 function renderCards() {
   const cards = state.cards.filter(c => c.type === state.activeType); activeTitle.textContent = state.activeType; activeEyebrow.textContent = `${cards.length} 張卡片 · 目前牌組`; empty.hidden = cards.length > 0;
-  grid.innerHTML = cards.map(card => `<article class="card ${card.id === state.focusId ? 'is-selected' : ''}" tabindex="0" role="button" aria-label="${card.title}，點擊翻面" data-id="${card.id}" style="--accent:${card.accent};--soft:${card.soft}"><div class="card-inner"><div class="face front"><img src="${card.image}" alt="${card.title}的情境圖案" loading="lazy"><button class="zoom-button" type="button" aria-label="放大查看${card.title}">放大</button></div><div class="face back"><img class="back-image" src="${card.backImage}" alt="${card.title}的文字背面"><button class="zoom-button" type="button" aria-label="放大查看${card.title}文字">放大</button></div></div></article>`).join('');
+  grid.innerHTML = cards.map(card => `<article class="card ${card.id === state.focusId ? 'is-selected' : ''}" tabindex="0" role="button" aria-label="${card.title}，點擊翻面" data-id="${card.id}" style="--accent:${card.accent};--soft:${card.soft}"><div class="card-inner"><div class="face front"><img src="${imgFor(card.image)}" alt="${card.title}的情境圖案" loading="lazy"><button class="zoom-button" type="button" aria-label="放大查看${card.title}">放大</button></div><div class="face back"><img class="back-image" src="${imgFor(card.backImage)}" alt="${card.title}的文字背面"><button class="zoom-button" type="button" aria-label="放大查看${card.title}文字">放大</button></div></div></article>`).join('');
   grid.querySelectorAll('.card').forEach(card => {
     const flip = () => { card.classList.toggle('is-flipped'); state.focusId = card.dataset.id; };
     card.addEventListener('click', flip);
@@ -77,7 +79,7 @@ function renderCards() {
 }
 
 function openZoom(card, flipped) { if (!card) return; zoomCard = card; zoomFlipped = flipped; renderZoomFace(); modal.hidden = false; modal.setAttribute('aria-hidden', 'false'); modalClose.focus(); }
-function renderZoomFace() { if (!zoomCard) return; zoomStage.innerHTML = zoomFlipped ? `<div class="face back"><img class="back-image" src="${zoomCard.backImage}" alt="${zoomCard.title}的文字背面"></div>` : `<div class="face front"><img src="${zoomCard.image}" alt="${zoomCard.title}的放大圖案"></div>`; }
+function renderZoomFace() { if (!zoomCard) return; zoomStage.innerHTML = zoomFlipped ? `<div class="face back"><img class="back-image" src="${imgFor(zoomCard.backImage)}" alt="${zoomCard.title}的文字背面"></div>` : `<div class="face front"><img src="${imgFor(zoomCard.image)}" alt="${zoomCard.title}的放大圖案"></div>`; }
 function closeZoom() { modal.hidden = true; modal.setAttribute('aria-hidden', 'true'); zoomStage.innerHTML = ''; }
 function openReflection(card) {
   if (!card) return;
